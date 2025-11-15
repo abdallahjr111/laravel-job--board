@@ -9,6 +9,7 @@ class JobController extends Controller
 {
     function index() {
         $jobs= Job::all();
-        return view('job/index', ['jobs' => $jobs, 'name'=> 'yahya']);
+        return view('index', ['jobs' => $jobs, 'name'=> 'abdallah']);
     }
 }
+
