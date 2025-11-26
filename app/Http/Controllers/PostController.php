@@ -1,37 +1,72 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Post;
 use Illuminate\Http\Request;
-use function Pest\Laravel\post;
 
 class PostController extends Controller
 {
-    function index(){
-        // Orm -> get all data
-        $data= post::paginate( 10);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+                // Orm -> get all data
+        $data= Post::paginate( 10);
 
         // pass data to the view
         return view('post.index',['posts'=>$data  , "pageTitle"=>"Blog" ]);
     }
-function show($id){
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('Post.create',["pageTitle"=> "Blog - create new post" ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // to do: this will completed form section
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
     $post = post::find($id);
 
     return view('post.show',['post'=> $post , "pageTitle"=> $post->title ]);
-}
-    function create(){
-        // $post = post::create( [
-        //     'title' => 'my find unique post',
-        //     'body' => 'this is to test post',
-        //     'author' => 'abdallah',
-        //     'published' => true
-        // ]);
-
-        post::factory(1000)->create();
-        return redirect('/blog');
     }
-    function delete(){
-        $post = post::destroy(4);
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+    return view('Post.edit',["pageTitle"=> "Blog - edit post" ]);
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+             // to do: this will completed form section
     }
 }
-
