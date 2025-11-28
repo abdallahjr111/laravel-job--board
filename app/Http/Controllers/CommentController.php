@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -12,28 +14,36 @@ class CommentController extends Controller
      */
     public function index()
     {
-                // Orm -> get all data
-        $comments= Comment::paginate( 10);
 
-        // pass data to the view
-        return view(' comment.index',['comments'=>$comments  , "pageTitle"=>"comments" ]);
-    }
+            return redirect(to:'/blog');
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('comment.create',["pageTitle"=> "Blog - create new comment"]);
+                return redirect(to:'/blog');
 
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        //
+        $post=Post::findOrFail($request->input('post_id'));
+
+        $comment= new Comment();
+
+        $comment->author=$request->input('author');
+        $comment->content=$request->input('content');
+        $comment->post_id=$request->input('post_id');
+
+        $comment->save();
+
+        return redirect("/blog/{$post->id}")->with('success', 'comment added successfully!');
+
     }
 
     /**
@@ -41,9 +51,7 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-            $comment= Comment::find($id);
-
-        return view('comment.show',['comment'=> $comment,'pageTitle'=>'view Comment']);
+        return redirect(to: '/blog');
 
     }
 
@@ -52,14 +60,13 @@ class CommentController extends Controller
      */
     public function edit(string $id)
     {
-        $comment= Comment::find($id);
-        return view('comment.edit',['comment'=> $comment,"pageTitle"=> "Blog - edit comment"]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CommentRequest $request, string $id)
     {
         //
     }
